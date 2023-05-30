@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>KillShotTheBeat</title>
+    <link rel="stylesheet" href="../stylesheet.css"/>
+    <link rel="stylesheet" href="https://tyobo.github.io/PortfolioSite/vs2015.min.css" />
+    <script src="https://tyobo.github.io/PortfolioSite/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+  </head>
+  <div>
+    <h3>概要</h3>
+    <hr class="subhr">
+    <p>ジャンル：リズムゲーム×ファーストパーソン・シューティングゲーム</p>
+    <p>プレイ人数：1人</p>
+    <p>プラットフォーム：PC</p>
+    <p>開発環境：2020.2.5f1</p>
+    <p>使用言語：C#</p>
+    <p>開発人数：13人(リーダ１人・プランナー3人・プログラマーリーダー１人・プログラマー6人・2Dデザイナー2人)</p>
+    <p>プロジェクト後半でほとんど出来てないチームに入り完成まで持っていきました。</p>
+    <h3>担当箇所</h3>
+      <hr class="subhr">
+      <h3> Tipsの処理</h3>
+      <hr>
+    <div>
+      <pre class="code C#"><code>
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Video;
+using UnityEngine.UI;
+using DG.Tweening;
+public class TipsView : MonoBehaviour
+{
+    //表示データ
+    public enum Tips
+    {
+        Move,
+        Image
+    }
+    //Inspectorに複数データを表示するためのクラス
+    [System.SerializableAttribute]
+    public class TipsViewList
+    {
+        public Tips tips;
+        public GameObject CanvasObj;
+        public GameObject VideoObj;
+        public VideoPlayer videoPlayer;
+        public VideoClip videoClip;
+        [Header("動画ではない場合の表示時間")]
+        public float ImageTimer;
+    }
+    //public VideoPlayer videoPlayer;
+    public float MoveFadeTime;
+    //Inspectorに表示される
+    [SerializeField]
+    private List&lt;TipsViewList&gt;_valueListList = new List&lt;TipsViewList&gt;();
+    [SerializeField]
+    private int ViewCount;
+    public bool FinishPlayingVideoFlag = false;
+    CanvasGroup canvasGroupFadeIn;
+    CanvasGroup canvasGroupFadeOut;
+    [SerializeField]
+    Material materialFadeIn;
+    [SerializeField]
+    Material materialFadeOut;
+
+    private void Start()
+    {
+        ViewCount = 0;
+        ViewTime();
+    }
+    private void ViewTime()
+    {
+        if (_valueListList[ViewCount].tips == Tips.Image)
+        {
+            FinishPlayingVideoFlag = false;
+            StartCoroutine(Timer(_valueListList[ViewCount].ImageTimer));
+        }
+        else
+        {
+            _valueListList[ViewCount].videoPlayer = _valueListList[ViewCount].VideoObj.GetComponent&lt;VideoPlayer&gt;();
+            _valueListList[ViewCount].videoPlayer.Play();
+            StartCoroutine(tikTimer(1.3f));
+
+            //_valueListList[ViewCount].videoPlayer.isLooping =true;
+            _valueListList[ViewCount].videoPlayer.loopPointReached += OnLoopPointReached;
+        }
+    }
+    IEnumerator Timer(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+        //Debug.Log("終了時の処理");
+        _valueListList[0].videoPlayer = null;
+        _valueListList[2].videoPlayer = null;
+        FadeAnimetion();
+
+    }
+    IEnumerator tikTimer(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+        FinishPlayingVideoFlag = true;
+    }
+    public void OnLoopPointReached(VideoPlayer vp = null)
+    {
+        if (FinishPlayingVideoFlag)
+        {
+            Debug.Log("再生終了時の処理");
+            FinishPlayingVideoFlag = false;
+            Debug.Log("Loop時の処理");
+            _valueListList[ViewCount].videoPlayer.frame = 0;
+            _valueListList[ViewCount].videoPlayer = null;
+            // 動画再生完了時の処理
+            FadeAnimetion();
+        }
+
+    }
+    private void FadeAnimetion()
+    {
+        Debug.Log("Fade");
+
+        //Faid
+
+        canvasGroupFadeIn = _valueListList[ViewCount].CanvasObj.GetComponent&lt;CanvasGroup&gt;();
+        canvasGroupFadeIn.alpha = 1;
+        _valueListList[ViewCount].CanvasObj.SetActive(true);
+
+
+        if (ViewCount == _valueListList.Count - 1)
+        {
+            canvasGroupFadeOut = _valueListList[0].CanvasObj.GetComponent&lt;CanvasGroup&gt;();
+            canvasGroupFadeOut.alpha = 0;
+            _valueListList[0].CanvasObj.SetActive(true);
+        }
+        else
+        {
+            canvasGroupFadeOut = _valueListList[ViewCount + 1].CanvasObj.GetComponent&lt;CanvasGroup&gt;();
+            canvasGroupFadeOut.alpha = 0;
+            _valueListList[ViewCount + 1].CanvasObj.SetActive(true);
+
+
+        }
+        int _Count = ViewCount;
+        if (ViewCount == _valueListList.Count - 1)
+        {
+            ViewCount = 0;
+        }
+        else
+        {
+            ViewCount++;
+        }
+
+
+        canvasGroupFadeIn.DOFade(0, MoveFadeTime).OnComplete(() => { _valueListList[_Count].CanvasObj.SetActive(false); });
+
+        canvasGroupFadeOut.DOFade(1, MoveFadeTime);//.OnComplete(() => { ViewTime(); });
+
+        ViewTime();
+
+        if (_valueListList[_Count].tips == Tips.Move)
+            StartCoroutine(MoveFadeIn(_Count, true));
+
+        if (_Count == 2)
+        {
+            Debug.Log("MoveFade");
+            if (_valueListList[0].tips == Tips.Move)
+                StartCoroutine(MoveFadeOut(0, false));
+        }
+        else if (_valueListList[_Count + 1].tips == Tips.Move)
+        {
+            Debug.Log("MoveFade");
+            StartCoroutine(MoveFadeOut(_Count + 1, false));
+        }
+
+    }
+    IEnumerator MoveFadeIn(int _count, bool plus)
+    {
+
+        materialFadeIn = _valueListList[_count].VideoObj.GetComponent&lt;MeshRenderer&gt;().material;
+        int _Timer = 0;
+        materialFadeIn.color = new Color(1, 1, 1, 1);
+        while (true)
+        {
+            if (_Timer >= 100)
+                break;
+            yield return new WaitForSeconds(0.02f);
+            materialFadeIn.color -= new Color(0, 0, 0, 0.01f);
+
+            _Timer++;
+        }
+        materialFadeIn.color = new Color(1, 1, 1, 0);
+    }
+    IEnumerator MoveFadeOut(int _count, bool plus)
+        {
+        int _Timer = 0;
+        materialFadeOut = _valueListList[_count].VideoObj.GetComponent&lt;MeshRenderer&gt;().material;
+        // Debug.Log("MoveFade-");
+        materialFadeOut.color = new Color(1, 1, 1, 0);
+        while (true)
+        {
+            if (_Timer >= 100)
+                break;
+            yield return new WaitForSeconds(0.02f);
+            materialFadeOut.color += new Color(0, 0, 0, 0.01f);
+
+            _Timer++;
+
+        }
+        materialFadeOut.color = new Color(1, 1, 1, 1);
+    }
+}
+    </code>
+    </pre>
+    </div>
+    <p>滑らかに動かすためにDOTweenを使用しました。</p>
+    <h3>オブジェクトをワイヤーフレーム化</h3>
+    <hr>
+  <div>
+    <pre class="code C#"><code>
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        public enum Controller
+        {
+            Lines,
+            Points
+        
+        }
+        public class Wireframe : MonoBehaviour
+        {
+            [SerializeField]
+            Controller controller;
+            [SerializeField]
+            public Material material;
+            [SerializeField]
+            Material material2;
+            void Start()
+            {
+                if (this.gameObject.GetComponent&lt;MeshFilter&gt;() != null)
+                {
+                    MeshFilter meshFilter = GetComponent&lt;MeshFilter&gt;();
+                    MeshRenderer meshRenderer = this.GetComponent&lt;MeshRenderer&gt;();
+                    meshRenderer.material = material;
+                    switch (controller)
+                    {
+                        case Controller.Lines:
+                            meshFilter.mesh.SetIndices(meshFilter.mesh.GetIndices(0), MeshTopology.Lines, 0);
+                            break;
+                        case Controller.Points:
+                            meshFilter.mesh.SetIndices(meshFilter.mesh.GetIndices(0), MeshTopology.Points, 0);
+                            break;
+                    }
+                }
+            }
+        }
+    </code>
+    </pre>
+    </div>
+    <video src="../mov/movie_002.mp4" 　width="560" height="315" controls></video>
+    <p>MeshFilterで簡単にワイヤーフレームを作成</p>
+     <body>
+    <p><a href="..\index.html">トップページへ戻る</a></p>

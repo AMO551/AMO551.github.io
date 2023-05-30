@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HouseofCandy</title>
+    <link rel="stylesheet" href="../stylesheet.css"/>
+    <link rel="stylesheet" href="https://tyobo.github.io/PortfolioSite/vs2015.min.css" />
+    <script src="https://tyobo.github.io/PortfolioSite/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+  </head>
+  <div>
+      <h3>概要</h3>
+      <hr class="subhr">
+      <p>ジャンル：謎解き３D脱出アクション</p>
+      <p>プレイ人数：1人</p>
+      <p>プラットフォーム：オキュラス</p>
+      <p>開発環境：2020.2.15f1</p>
+      <p>使用言語：C#</p>
+      <p>開発人数：19人(リーダ1人・プランナー3人・プログラマーリーダー1人・プログラマー5人・2Dデザイナー2人・3Dデザイナー7人)</p>
+      <p>プログラマーが多かったためかなりやることがかなり少なかったです。</p>
+      <h3>担当箇所</h3>
+      <hr class="subhr">
+      <h3> パスワードギミック</h3>
+      <hr>
+    <div>
+      <pre class="code C#"><code>
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEngine.UI;
+        　　//どの文字
+            public enum InputST
+            {
+                Input1,　//文字１
+                Input2,  //文字２
+                Input3,  //文字３
+                Input4,  //文字４
+                Input5   //文字５
+            }
+        public class InputGimmick : MonoBehaviour
+        {
+            //文字判定
+            public InputST sT;
+            //文字リスト
+            [SerializeField]
+            List<string> Character = new List<string>();
+            //文字の確認
+            [SerializeField]
+            private string answer = "";
+            //メイン処理
+            [SerializeField]
+            ClickGimmick clickGimmick;
+            //テキスト呼び出し
+            [SerializeField]
+            Text text;
+            //
+            private int _text=0;
+            [SerializeField]
+            //適当ほげ
+            private bool hoge=false;
+            private void Start()
+            {
+                text.text = Character[_text];
+            }
+            //PC用クリック
+            private void OnMouseDown()
+            {
+                Debug.Log("クリック");
+                if (text.text == Character[4])
+                {
+                    _text = 0;
+                    text.text = (Character[_text]);
+                }
+                else
+                {
+                    _text++;
+                    text.text = Character[_text];
+                }
+                if (text.text == answer)
+                {
+                    hoge = true;
+                    switch(sT)
+                    {
+                        case (InputST)0:
+                            clickGimmick.input1 = true;
+                            break;
+                        case (InputST)1:
+                            clickGimmick.input2 = true;
+                            break;
+                        case (InputST)2:
+                            clickGimmick.input3 = true;
+                            break;
+                        case (InputST)3:
+                            clickGimmick.input4 = true;
+                            break;
+                        case (InputST)4:
+                            clickGimmick.input5 = true;
+                            break;
+                    }
+                }else
+                {
+                    hoge = false;
+                    switch (sT)
+                    {
+                        case (InputST)0:
+                            clickGimmick.input1 = false;
+                            break;
+                        case (InputST)1:
+                            clickGimmick.input2 = false;
+                            break;
+                        case (InputST)2:
+                            clickGimmick.input3 = false;
+                            break;
+                        case (InputST)3:
+                            clickGimmick.input4 = false;
+                            break;
+                        case (InputST)4:
+                            clickGimmick.input5 = false;
+                            break;
+                    }
+                }
+            }
+                
+        }
+    </code>
+    </pre>
+    </div>
+     <body>
+    <p><a href="..\index.html">トップページへ戻る</a></p>

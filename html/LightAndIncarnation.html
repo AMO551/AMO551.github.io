@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Light and Incarnation</title>
+    <link rel="stylesheet" href="../stylesheet.css"/>
+    <link rel="stylesheet" href="https://tyobo.github.io/PortfolioSite/vs2015.min.css" />
+    <script src="https://tyobo.github.io/PortfolioSite/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+  </head>
+  <div>
+      <h3>概要</h3>
+      <hr class="subhr">
+      <p>ジャンル：2D横スクロールアドベンチャーゲーム</p>
+      <p>プレイ人数：1人</p>
+      <p>プラットフォーム：PC</p>
+      <p>開発環境：2021.2.15f1</p>
+      <p>使用言語：C#</p>
+      <p>開発人数：13人(リーダ1人・プログラマーリーダー1人・プログラマー4人・2Dデザイナー3人)</p>
+      <p>このゲームのリーダーとして、プランナーとプログラマーを兼任してゲーム開発を行いました。</p>
+      <h3>担当箇所</h3>
+      <hr class="subhr">
+
+      <h3> ゲームマネージャー</h3>
+      <hr>
+    <div>
+      <pre class="code C#"><code>
+        using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine;
+
+public class GameManagement : MonoBehaviour
+{
+    public enum CharacterID
+    {
+        Girl = 0,
+        Swordsman,
+        Bowman,
+        Wizard
+    }
+    public enum MapID
+    {
+        MapTutorial = 0,
+        Map1,
+        Map2,
+        Map3,
+        MapBoss
+
+    }
+    public enum AtkID
+    {
+        Atk1 = 0,
+        Atk2,
+        Atk3
+    }
+    #region 初期化  
+    private static int playerHp;
+    private static int playerMp;
+    private static int playerOrb;
+
+    [SerializeField]
+    private static XboxPlayerContorol xboxPlayer;
+    public static GameManagement Instance { get => _instance; }
+    static GameManagement _instance;
+    [SerializeField, Range(0, 100)]
+    public int PlayerHP;
+    [SerializeField, Range(0, 100)]
+    public int PlayerMP;
+
+    public int PlayerOrb;
+    [SerializeField]
+    public CharacterID PlayerCharacter;
+    [SerializeField]
+    public CharacterID Character;
+    [SerializeField]
+    private static string Map;
+    [SerializeField]
+    public AtkID Atk;
+
+    //Boss用
+    [SerializeField]
+    public CharacterID BossCharacter;
+    [SerializeField]
+    public CharacterID Boss_Character;
+
+    //プレイヤーのスクリプトを呼び出だす。
+    #endregion
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            _instance = this;
+        }
+        if (Map == null)
+        {
+            //Debug.LogError("Mapの値がはいってねーよなー");
+        }
+        else
+            Map = SceneManager.GetActiveScene().name;
+        Debug.Log(Map);
+
+    }
+    private void Start()
+    {
+        if (!(Map == null))
+            if (SceneManager.GetActiveScene().name == "Map1" || SceneManager.GetActiveScene().name == "Map1RE")
+            {
+                PlayerHP = 100;
+                PlayerMP = 100;
+                PlayerOrb = 100;
+                playerHp = 100;
+                playerMp = 100;
+                playerOrb = 100;
+            }
+            else if (SceneManager.GetActiveScene().name == "PVMap" || SceneManager.GetActiveScene().name == "MapTutorial" || SceneManager.GetActiveScene().name == "GameOver")
+            {
+                PlayerHP = 100;
+                PlayerMP = 100;
+                PlayerOrb = 100;
+                playerHp = 100;
+                playerMp = 100;
+                playerOrb = 100;
+            }
+            else
+            {
+                PlayerHP = playerHp;
+                PlayerMP = playerMp;
+                PlayerOrb = playerOrb;
+            }
+
+        Map = SceneManager.GetActiveScene().name;
+        if (xboxPlayer == null)
+        {
+            var xbox = GameObject.FindGameObjectWithTag("Player");
+            xboxPlayer = xbox.GetComponent&lt;XboxPlayerContorol&gt;();
+        }
+        StartCoroutine(GetOrb());
+        Application.targetFrameRate = 60;
+
+    }
+    private void Update()
+    {
+        playerHp = PlayerHP;
+        playerMp = PlayerMP;
+        playerOrb = PlayerOrb;
+    }
+    public string SetMapScenes()
+    {
+        return Map;
+    }
+    //Orb回復
+    IEnumerator GetOrb()
+    {
+        while (true)
+        {
+            if (PlayerOrb&lt;= 100)
+            {
+                //Debug.Log("");
+                PlayerOrb += 1;
+                if (PlayerOrb >= 100)
+                    PlayerOrb = 100;
+            }
+            playerOrb = PlayerOrb;
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    public void PlayerDamage(int Damage) //プレイヤーにダメージ
+    {
+        //プレイヤーを呼び出す
+        PlayerHP -= Damage;
+        playerHp = PlayerHP;
+        xboxPlayer.ReturnGirlKey();
+
+        if (PlayerHP&lt;= 0)
+        {
+            Debug.Log("プレイヤーが死んだ");
+            //SceneManager.LoadScene("GameOver");
+        }
+
+        //Player.Instance.PlayerHP -= Damage;
+    }
+    public void PlayerHeal(int Heal) //プレイヤーにダメージ
+    {
+        //プレイヤーを呼び出す
+        PlayerHP += Heal;
+
+        if (PlayerHP >= 100)
+        {
+            PlayerHP = 100;
+        }
+        playerHp = PlayerHP;
+
+        //Player.Instance.PlayerHP -= Damage;
+    }
+    public int PlayerAtk(int EnemyHP)　//エネミーにダメージ
+    {
+        Debug.Log(EnemyHP);
+        switch (PlayerCharacter)
+        {
+            case CharacterID.Swordsman:
+                switch (Atk)
+                {
+                    case AtkID.Atk1:
+                        EnemyHP -= 4;
+                        break;
+                    case AtkID.Atk2:
+                        EnemyHP -= 4;
+                        break;
+                    case AtkID.Atk3:
+                        EnemyHP -= 4;
+                        break;
+                }
+                break;
+            case CharacterID.Bowman:
+                switch (Atk)
+                {
+                    case AtkID.Atk1:
+                        EnemyHP -= 3;
+                        break;
+                    case AtkID.Atk2:
+                        EnemyHP -= 3;
+                        break;
+                    case AtkID.Atk3:
+                        EnemyHP -= 3;
+                        break;
+                }
+                break;
+        }
+        Debug.Log(EnemyHP);
+        Debug.Log("EnemyDame");
+        return EnemyHP;
+    }
+    //MP追加予定
+}
+
+    </code>
+    </pre>
+    </div>
+    <p>簡単に処理を行えるようにしました。</p>
+
+     <body>
+    <p><a href="..\index.html">トップページへ戻る</a></p>

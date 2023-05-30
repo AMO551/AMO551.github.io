@@ -1,0 +1,127 @@
+.area {
+    width: 100%;
+    margin: left;
+    flex-wrap: wrap;
+    display: flex;
+  }
+  
+  .tab_class {
+    width: calc(100%/2);
+    height: 50px;
+    background-color: darkgrey;
+    line-height: 50px;
+    font-size: 15px;
+    text-align: center;
+    display: block;
+    float: left;
+    order: -1;
+  }
+  
+  body
+  {
+  max-width: 1020px;
+  margin: 0 auto;
+  }
+  
+  .hr{
+  border-top: 5px solid #000;
+  }
+  .subhr
+  {
+    border-top: 2px solid #000;
+  }
+  
+  h1{
+    text-align: center;
+  }
+  
+  
+  input[name="tab_name"] {
+    display: none;
+  }
+  
+  input:checked + .tab_class {
+    background-color:black;
+    color: white;
+  }
+  
+  .content_class {
+    display: none;
+    width: 100%;
+  }
+  
+  input:checked + .tab_class + .content_class {
+    display: block;
+  }
+  pre{
+    width: 1120px;
+    height: 315px;
+  }
+  /*ソースコード用*/
+  .code{ 
+    position:relative;
+    margin-left: 0px;
+    padding:30px 20px 10px 20px;
+    border-left: solid 10px #000000;
+    width: auto;
+    background:#2F3437;
+    list-style:none;
+    color: #fff;
+    font-size:1em;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    }
+    @media (max-width:1020px) and (min-width:768px){
+      .code{
+        position:relative;
+        margin-left: 0px;
+        padding:30px 20px 10px 20px;
+        border-left: solid 10px #000000;
+        width: auto;
+        background:#2F3437;
+        list-style:none;
+        color: #fff;
+        font-size:0.5em;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  
+    @media (max-width:1020px) and (min-width:768px){
+    body
+    {
+      width: 95%;
+      margin: 0 auto;
+      font-size: 40px;
+    }
+    p{
+      font-size: 40px;
+    }
+    h3{
+      font-size: 50px;
+    }
+  hr{
+    border-top: 5px solid #000;
+    margin: 8px 0px 8px 0px;
+    }
+  .subhr{
+    border-top: 10px solid #000;
+    }
+    .code{ 
+    margin-top: 50px;
+    margin-left: 0;
+    padding: 20px;
+    border-left: none;
+    width: 95%;
+    font-size: 1.5em;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+      }
+      .tab_class {
+        width: calc(100%/2);  /*ここでタブの横幅調整*/
+        height: 70px;
+        line-height: 50px;
+        font-size: 40px;
+        vertical-align: middle;
+      }
+  }
