@@ -1,15 +1,34 @@
+@font-face {
+  font-family: 'nikumaru';
+  src: url(./Font/nikumaru.woff)format('woff');
+}
+.font1 {
+  font-family: nikumaru;
+  }
 body {
   margin: 0;
   padding: 0;
   color: #1a1a1a;
-  font-family: 'Noto Sans JP', sans-serif;
-  background: #f6f5f4;
+  /*font-family: 'Noto Sans JP', sans-serif;*/
+  font-family:'nikumaru';
+  background: hsla(30, 10%, 96%, 0);
 }
 header {
+
+  /*width: 100%; 
+  height: 100px; 
+  border-radius: 0rem; 
+  background: radial-gradient(77.73% 77.73% at 98.52% 96.25%, #F98BDA 0%, rgba(128, 76, 239, 0.29) 50.52%, rgba(91, 216, 216, 0) 100%),
+   radial-gradient(141.73% 105.23% at 50% -7.16%, #E1F8FF 0%, rgba(160, 198, 255, 0) 50.73%, rgba(162, 147, 255, 0) 100%), 
+   radial-gradient(112.27% 48.54% at 1.59% 50%, rgba(255, 130, 227, 0.5) 0%, rgba(255, 123, 234, 0.095) 53.91%, rgba(254, 216, 255, 0) 100%), 
+   linear-gradient(153.07deg, #8177F3 6.37%, rgba(255, 230, 166, 0) 83.82%); 
+  background-blend-mode: color-dodge, darken, luminosity, color, overlay, saturation; 
+  filter: blur(0px);*/
+  font-family:'nikumaru';
   width: 100%;
   height: 100px;
-  background: #224197;
-  display: flex; /* flexboxを作る */
+  background: #295fff;
+  display: flex;/* flexboxを作る */
   align-items: center; /* 上下中央に揃える */
   justify-content: space-between; /* 両端に配置 */
   padding-left: 30px;
