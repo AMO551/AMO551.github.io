@@ -25,12 +25,24 @@
     <p>プラットフォーム：PC</p>
     <p>開発環境：2020.2.5f1</p>
     <p>使用言語：C#</p>
-    <p>開発人数：13人(リーダ１人・プランナー3人・プログラマーリーダー１人・プログラマー6人・2Dデザイナー2人)</p>
+    <p>開発人数：9人(リーダ１人・プログラマーリーダー１人・プログラマー5人・2Dデザイナー2人)</p>
     <p>プロジェクト後半でほとんど出来てないチームに入り完成まで持っていきました。</p>
-    <h3>担当箇所</h3>
-      <hr class="subhr">
-      <h3> Tipsの処理</h3>
-      <hr>
+    <h3>作品を通じて</h3>
+    <hr class="subhr">
+    <p>今回のプロジェクトでは、マップの作成やPV作成などを行いました。
+        処理とオブジェクトやスクリプトの関係性などを勉強することができました。
+    </p>
+    <h3>制作の学び</h3>
+    <hr class="subhr">
+      <p>●負荷がどこにかかっているかやシーンのロードを効率よく進める方法を学んだ</p>
+      <p>●UnityのアセットUnityTask、UniRX、DO Tweenを学んだ</p>
+    <h3>反省</h3>
+    <hr class="subhr">
+    <p>自分の担当場所がプログラムメインではなかったため周りとの技術差を感じることがあった。
+        差をなくすためいろいろな技術を取り入れようといろんなことに取り組んでいる。
+    </p>
+    <h3> Tipsの処理</h3>
+    <hr>
     <div>
       <pre class="code C#"><code>
 using System.Collections;
@@ -211,7 +223,7 @@ public class TipsView : MonoBehaviour
                 break;
             yield return new WaitForSeconds(0.02f);
             materialFadeOut.color += new Color(0, 0, 0, 0.01f);
-
+。
             _Timer++;
 
         }
@@ -222,6 +234,7 @@ public class TipsView : MonoBehaviour
     </pre>
     </div>
     <p>滑らかに動かすためにDOTweenを使用しました。</p>
+    <p>  そのほかにもコールチンなどを使用して演出を行っています。</p>
     <h3>オブジェクトをワイヤーフレーム化</h3>
     <hr>
   <div>
@@ -266,6 +279,6 @@ public class TipsView : MonoBehaviour
     </pre>
     </div>
     <video src="../mov/movie_002.mp4" 　width="560" height="315" controls></video>
-    <p>MeshFilterで簡単にワイヤーフレームを作成</p>
+    <p>MeshFilterを使いオブジェクトのフレームだけを表示させ、演出に使っております。</p>
      <body>
     <p><a href="..\index.html">トップページへ戻る</a></p>

@@ -9,7 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet">
-<header>
+<div id="splash">
+  <div id="splash-logo">Portfolio</div>
+    <!--/splash--></div>
+  <div class="splashbg"></div><!---画面遷移用-->
+  <div id="container">
+  <header>
       <h1><a href="index.html">PortFolio</a></h1>
       <nav>
         <ul>
@@ -17,12 +22,10 @@
             <li><a href="#area-2">WORK</a></li>
         </ul>
     </nav>
-</header>
-
-<body>
-
-  <section class="area" id="area-1">
-  <div class="center">
+  </header>
+  <body>
+    <section class="area" id="area-1">
+    <div class="center">
     <p>ABOUT ME</p>
     <hr width="600">
   </div>
@@ -31,7 +34,7 @@
     src="Img/My.JPG"
     alt="My"></img>
   </div>
-   <!--<p class="aboutname">礒部功太</p>*/-->
+  <!--<p class="aboutname">礒部功太</p>*/-->
   <div class="MeAbout">
     <p>　　氏名：礒部功太</p>
     <p>生年月日：2001年4月13日</p>
@@ -39,6 +42,31 @@
     <p>   E-MAIL：Kouta4611@gmail.com</p>
     <p>   Github：<a href="https://github.com/AMO551" target="_blank" rel="noopener noreferrer"> https://github.com/AMO551</a> </p>
   </div>  
+  <div class="MeAbout">
+    <p>好きなこと：スノボー</p>
+    <p>趣味：アニメ鑑賞、ウォーキング、温泉巡り、ドライブ</p>
+    </div> 
+    <p>スキル</p>
+    <div class="skill">
+      <div class="card">
+         <h3>ゲーム</h3>
+         <p>Unity</p>
+         <p>&ensp; C#</p>
+         <p>&ensp;UE4</p>
+          <p>&ensp;C++</p>
+        </div>
+        <div class="card">
+          <h3>Webフロントエンド</h3>
+          <p>HTML</p>
+          <p>&ensp;CSS</p>
+        </div>
+        <div class="card">
+          <h3>web バックエンド</h3>
+          <p>Python</p>
+        </div>
+        <div class="card"></div>
+        <div class="card"></div>
+      </div> 
 </section>
 
 <section class="area" id="area-2">
@@ -81,7 +109,11 @@
     <img src="Img/KillTheBeat.png" width="250">
     <p><a href="./html/KillTheBeat.html">概要とソースコードはこちら</a></p>
   </details>
-</div>
+
 </section>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!--自作のJS-->
+<script src="js/FeidInAnimation.js"></script>
 </body>
+</div>
 </html>
