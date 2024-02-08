@@ -172,6 +172,12 @@ header {
   top: 0;
   box-sizing: border-box;
 }
+details >summary {
+font:
+    50px "Open Sans",
+    Calibri,
+    sans-serif;
+}
 .skill {
   display:flex;
   justify-content: space-around;
